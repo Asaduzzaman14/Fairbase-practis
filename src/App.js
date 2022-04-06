@@ -1,5 +1,5 @@
 import './App.css';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
+import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 import app from './fairbase.init'
 import { useState } from 'react';
 
@@ -11,7 +11,11 @@ function App() {
 
 
   const provider = new GoogleAuthProvider()
+  const gitProvider = new GithubAuthProvider()
 
+
+
+  // google sing-in
   const handelGoogleSingIn = () => {
     signInWithPopup(auth, provider)
       .then(result => {
@@ -22,6 +26,23 @@ function App() {
       .catch(error =>
         console.error(error))
   }
+
+
+  // gitHub sing -in
+
+  const hanleGItHubsingIn = () => {
+    signInWithPopup(auth, gitProvider)
+      .then(res => {
+        const user = res.user
+        setUser(user)
+        console.log(user)
+      })
+      .then(err => {
+        console.error(err)
+      })
+
+  }
+  // 
   const handelGoogleSingOut = () => {
     signOut(auth)
       .then(() => {
@@ -33,11 +54,16 @@ function App() {
   }
 
 
+
   return (
     <div className="App">
       {
-        user.email ? <button onClick={handelGoogleSingOut}>Sing Out</button>
-          : <button onClick={handelGoogleSingIn}>sing in To Google</button>
+        user.email ? <div>
+          <button onClick={handelGoogleSingOut}>Sing Out</button>
+        </div>
+          : <div> <button onClick={handelGoogleSingIn}>sing in To Google</button>
+            <button onClick={hanleGItHubsingIn}>sing in To GitHub</button>
+          </div>
 
       }
       <h2>name:{user.displayName}</h2>
