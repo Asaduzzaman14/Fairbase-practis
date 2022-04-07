@@ -1,5 +1,5 @@
 import './App.css';
-import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
+import { FacebookAuthProvider, getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 import app from './fairbase.init'
 import { useState } from 'react';
 
@@ -12,6 +12,7 @@ function App() {
 
   const provider = new GoogleAuthProvider()
   const gitProvider = new GithubAuthProvider()
+  const facebook = new FacebookAuthProvider()
 
 
 
@@ -42,6 +43,19 @@ function App() {
       })
 
   }
+  // Facebook sign in
+  const hanleFacebooksingIn = () => {
+    signInWithPopup(auth, facebook)
+      .then((result) => {
+        setUser(result.user)
+        console.log(result.user);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
+  }
+
   // 
   const handelGoogleSingOut = () => {
     signOut(auth)
@@ -62,6 +76,8 @@ function App() {
           <button onClick={handelGoogleSingOut}>Sing Out</button>
         </div>
           : <div> <button onClick={handelGoogleSingIn}>sing in To Google</button>
+
+            <button onClick={hanleFacebooksingIn}>faceBook Sign in</button>
             <button onClick={hanleGItHubsingIn}>sing in To GitHub</button>
           </div>
 
